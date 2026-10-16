@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a1428">
+  <meta name="description" content="GWS Solutions brinda mantenimiento de software de gestión, instalación, configuración, backup y asistencia para empresas que utilizan Tango Gestión, Bejerman, Libertya, Dolibarr y Odoo.">
+  <title>GWS Solutions | Soporte, Instalación y Backup para Empresas</title>
+  <style>
+    :root {
+      --navy: #081326;
+      --navy-2: #101f3b;
+      --blue: #3978f6;
+      --cyan: #42d7e8;
+      --green: #32d49a;
+      --ink: #17233b;
+      --muted: #64718a;
+      --line: #e4eaf3;
+      --surface: #f4f7fc;
+      --white: #ffffff;
+      --radius: 20px;
+      --shadow: 0 18px 50px rgba(18, 37, 72, .10);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      font-family: "Segoe UI", Inter, Arial, sans-serif;
+      background: var(--surface);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .wrap { width: min(1160px, calc(100% - 40px)); margin-inline: auto; }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(8, 19, 38, .94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav {
+      min-height: 76px; display: flex; align-items: center;
+      justify-content: space-between; gap: 24px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
+    .brand img { width: 46px; height: 46px; object-fit: contain; }
+    .brand-name { font-size: 18px; font-weight: 800; letter-spacing: .08em; }
+    .brand-name span { color: var(--cyan); }
+    .nav-links { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
+    .nav-links a { color: #dbe5f8; font-size: 14px; font-weight: 600; text-decoration: none; }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-links .nav-cta {
+      padding: 10px 16px; border-radius: 10px; color: #061326;
+      background: var(--cyan); font-weight: 800;
+    }
+
+    .hero {
+      position: relative; overflow: hidden; color: white;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(57,120,246,.30), transparent 32%),
+        radial-gradient(circle at 12% 100%, rgba(66,215,232,.12), transparent 35%),
+        linear-gradient(135deg, var(--navy), #10264a 65%, #0c1b34);
+      padding: 96px 0 90px;
+    }
+    .hero::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .18;
+      background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 90%);
+    }
+    .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.15fr .85fr; gap: 60px; align-items: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px; padding: 7px 12px;
+      border: 1px solid rgba(66,215,232,.35); border-radius: 99px;
+      color: #a9f2f7; background: rgba(66,215,232,.08);
+      font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 14px var(--green); }
+    h1 { max-width: 760px; font-size: clamp(38px, 5vw, 62px); line-height: 1.08; letter-spacing: -.04em; margin-bottom: 24px; }
+    h1 span { color: var(--cyan); }
+    .hero-copy { max-width: 660px; color: #d1dced; font-size: 18px; margin-bottom: 30px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 13px; }
+    .btn {
+      display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+      min-height: 49px; padding: 13px 20px; border-radius: 11px;
+      text-decoration: none; font-weight: 800; border: 1px solid transparent;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+      cursor: pointer; font-family: inherit; font-size: 15px;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--cyan); color: #061326; box-shadow: 0 10px 24px rgba(66,215,232,.16); }
+    .btn-primary:hover { background: #79eaf2; }
+    .btn-outline { color: white; border-color: rgba(255,255,255,.25); background: rgba(255,255,255,.04); }
+    .btn-outline:hover { border-color: var(--cyan); }
+    .hero-note { color: #9fb0ca; font-size: 13px; margin-top: 20px; }
+
+    .hero-panel {
+      border: 1px solid rgba(255,255,255,.13); border-radius: 24px; padding: 26px;
+      background: linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.035));
+      box-shadow: 0 30px 80px rgba(0,0,0,.22); backdrop-filter: blur(10px);
+    }
+    .panel-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 23px; color: #d8e4f7; font-size: 13px; }
+    .status { display: inline-flex; align-items: center; gap: 7px; color: #a5f5d8; font-size: 12px; font-weight: 700; }
+    .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+    .service-line { display: flex; gap: 14px; padding: 17px 0; border-top: 1px solid rgba(255,255,255,.10); }
+    .service-icon {
+      flex: 0 0 42px; height: 42px; display: grid; place-items: center; border-radius: 12px;
+      color: var(--cyan); background: rgba(66,215,232,.10); font-size: 20px;
+    }
+    .service-line h3 { color: white; font-size: 15px; margin-bottom: 3px; }
+    .service-line p { color: #aebdd3; font-size: 13px; line-height: 1.5; }
+
+    .trust-strip { background: white; border-bottom: 1px solid var(--line); }
+    .trust-inner { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 23px 0; }
+    .trust-item { display: flex; align-items: center; justify-content: center; gap: 12px; color: #40516d; font-size: 14px; font-weight: 700; text-align: center; }
+    .trust-item strong { color: var(--blue); font-size: 21px; }
+
+    section.content-section { padding: 88px 0; }
+    .section-heading { max-width: 760px; margin: 0 auto 42px; text-align: center; }
+    .kicker { color: var(--blue); font-size: 12px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 12px; }
+    .section-heading h2 { color: var(--navy); font-size: clamp(29px, 3.6vw, 42px); line-height: 1.18; letter-spacing: -.03em; margin-bottom: 15px; }
+    .section-heading p { color: var(--muted); font-size: 17px; }
+
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .service-card {
+      background: white; border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 30px; box-shadow: 0 8px 28px rgba(18,37,72,.045);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .service-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .service-card .icon {
+      width: 52px; height: 52px; display: grid; place-items: center; border-radius: 15px;
+      color: var(--blue); background: #edf3ff; font-size: 24px; margin-bottom: 22px;
+    }
+    .service-card h3 { color: var(--navy); font-size: 20px; margin-bottom: 10px; }
+    .service-card p { color: var(--muted); font-size: 15px; }
+    .service-card ul { list-style: none; margin-top: 18px; }
+    .service-card li { color: #40516d; font-size: 14px; margin-top: 9px; padding-left: 22px; position: relative; }
+    .service-card li::before { content: "✓"; position: absolute; left: 0; color: #12a879; font-weight: 900; }
+
+    .platforms { background: #eaf0f9; }
+    .platform-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+    .platform {
+      min-height: 145px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 12px; padding: 20px; background: white; border: 1px solid #dce5f2; border-radius: 16px;
+      text-align: center; box-shadow: 0 7px 22px rgba(18,37,72,.04);
+    }
+    .platform-logo {
+      width: 100%; height: 64px; display: flex; align-items: center; justify-content: center;
+      padding: 5px 0;
+    }
+    .platform-logo svg { display: block; width: 100%; max-width: 190px; height: 58px; }
+    .platform h3 { font-size: 15px; color: var(--navy); }
+    .platform small { color: var(--muted); font-size: 12px; }
+
+    .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; counter-reset: step; }
+    .process-card { position: relative; padding: 26px 22px; background: white; border: 1px solid var(--line); border-radius: 16px; }
+    .process-card::before {
+      counter-increment: step; content: "0" counter(step); display: block;
+      color: var(--blue); font-size: 13px; font-weight: 900; letter-spacing: .12em; margin-bottom: 17px;
+    }
+    .process-card h3 { color: var(--navy); font-size: 17px; margin-bottom: 8px; }
+    .process-card p { color: var(--muted); font-size: 14px; }
+
+    .backup-banner {
+      display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 30px;
+      padding: 42px; color: white; border-radius: 22px;
+      background: radial-gradient(circle at 90% 10%, rgba(66,215,232,.2), transparent 32%), linear-gradient(120deg, #0a1730, #16366a);
+      box-shadow: var(--shadow);
+    }
+    .backup-banner h2 { font-size: clamp(25px, 3vw, 34px); line-height: 1.2; margin-bottom: 12px; }
+    .backup-banner p { max-width: 700px; color: #c8d6ea; }
+    .backup-banner .btn { white-space: nowrap; }
+
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    details { background: white; border: 1px solid var(--line); border-radius: 13px; padding: 20px 22px; }
+    summary { cursor: pointer; color: var(--navy); font-weight: 800; }
+    details p { color: var(--muted); margin-top: 12px; font-size: 14px; }
+
+    .contact-section { background: linear-gradient(180deg, #edf3fb, #f7f9fd); }
+    .contact-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 42px; align-items: start; }
+    .contact-copy h2 { font-size: clamp(30px, 3.5vw, 42px); color: var(--navy); line-height: 1.15; margin-bottom: 18px; }
+    .contact-copy > p { color: var(--muted); margin-bottom: 25px; }
+    .contact-point { display: flex; align-items: flex-start; gap: 12px; margin: 18px 0; color: #40516d; font-size: 14px; }
+    .contact-point b { color: var(--blue); font-size: 18px; }
+    .contact-form { background: white; border: 1px solid var(--line); border-radius: 20px; padding: 30px; box-shadow: var(--shadow); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    label { display: block; color: #33435e; font-size: 13px; font-weight: 800; margin: 13px 0 6px; }
+    input, select, textarea {
+      width: 100%; padding: 13px 14px; border: 1px solid #d7dfeb; border-radius: 9px;
+      color: var(--ink); background: #fbfcff; font: inherit; font-size: 14px;
+      outline: none; transition: border .2s, box-shadow .2s;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(57,120,246,.12); }
+    textarea { resize: vertical; min-height: 125px; }
+    .contact-form .btn { width: 100%; margin-top: 18px; }
+    .form-note { color: #77839a; font-size: 12px; margin-top: 12px; }
+    .honeypot { position: absolute; left: -5000px; width: 1px; height: 1px; overflow: hidden; }
+    footer { background: #071122; color: #9cabc2; padding: 30px 0; }
+    .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; }
+    .footer-brand { color: white; font-weight: 900; letter-spacing: .08em; }
+    .footer-brand span { color: var(--cyan); }
+    .footer-note { font-size: 12px; }
+    .disclaimer { max-width: 1160px; margin: 18px auto 0; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.1); font-size: 11px; color: #8090a9; }
+
+    @media (max-width: 900px) {
+      .hero-grid, .contact-layout { grid-template-columns: 1fr; }
+      .hero { padding: 70px 0; }
+      .hero-panel { max-width: 620px; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .platform-grid { grid-template-columns: repeat(3, 1fr); }
+      .process-grid { grid-template-columns: 1fr 1fr; }
+      .backup-banner { grid-template-columns: 1fr; }
+      .backup-banner .btn { justify-self: start; }
+    }
+    @media (max-width: 600px) {
+      .wrap { width: min(100% - 28px, 1160px); }
+      .nav { padding: 12px 0; align-items: flex-start; flex-direction: column; gap: 10px; }
+      .nav-links { gap: 12px 16px; }
+      .nav-links a { font-size: 12px; }
+      .nav-links .nav-cta { padding: 7px 10px; }
+      .hero { padding: 58px 0; }
+      h1 { font-size: 39px; }
+      .hero-copy { font-size: 16px; }
+      .hero-panel { padding: 20px; }
+      section.content-section { padding: 62px 0; }
+      .services-grid, .platform-grid, .process-grid, .faq-grid, .form-row { grid-template-columns: 1fr; }
+      .platform { min-height: 115px; }
+      .backup-banner { padding: 28px 22px; }
+      .contact-form { padding: 22px; }
+      .trust-inner { grid-template-columns: 1fr; gap: 12px; }
+      .trust-item { justify-content: flex-start; text-align: left; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+
+    /* Estética brillante y cristalina GWS */
+    :root { --navy:#06152e; --navy-2:#0a2d60; --blue:#087cff; --cyan:#00e5ff; --green:#35f5c2; --ink:#f5f9ff; --muted:#d0e1f8; --line:rgba(125,208,255,.35); --surface:#071a36; --white:#ffffff; --shadow:0 18px 48px rgba(0,190,255,.18); }
+    body { color:#f5f9ff; background: radial-gradient(ellipse at 15% 10%,rgba(0,185,255,.25),transparent 35%), radial-gradient(ellipse at 85% 35%,rgba(42,93,255,.28),transparent 40%), linear-gradient(145deg,#041026,#082957 55%,#06152e); }
+    .topbar { background:rgba(4,15,35,.72); backdrop-filter:blur(22px); border-bottom:1px solid rgba(120,220,255,.3); box-shadow:0 8px 30px rgba(0,0,0,.2); }
+    .brand img { filter:drop-shadow(0 0 12px rgba(0,220,255,.55)); }
+    .nav-links a { color:#edf8ff; }
+    .nav-links .nav-cta,.btn-primary { color:#04142c; background:linear-gradient(110deg,#00f0df,#00a8ff 58%,#1764ff); box-shadow:0 8px 28px rgba(0,190,255,.32); }
+    .hero { background:radial-gradient(circle at 78% 20%,rgba(0,184,255,.4),transparent 35%),radial-gradient(circle at 8% 90%,rgba(0,239,255,.18),transparent 35%),linear-gradient(135deg,#03102a,#092c5d 65%,#04142d); }
+    .hero-panel,.section-heading,.platform,.service-card,.process-card,.contact-form,.faq-grid details,.backup-banner,.contact-copy { background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(67,161,255,.075)); border:1px solid rgba(150,224,255,.38); box-shadow:0 16px 40px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.15); backdrop-filter:blur(20px); }
+    .section-heading { padding:24px 28px; border-radius:24px; max-width:850px; }
+    .section-heading h2,.service-card h3,.process-card h3,.platform h3,.contact-copy h2,summary { color:#fff; }
+    .section-heading p,.service-card p,.service-card li,.process-card p,.platform small,.contact-copy > p,details p { color:#d4e7ff; }
+    .kicker { color:#4cecff; }
+    .trust-strip { background:rgba(4,18,42,.68); border-color:rgba(125,208,255,.25); }
+    .trust-item { color:#e5f3ff; }
+    .trust-item strong { color:#37eaff; }
+    section.content-section { position:relative; }
+    .platforms,.contact-section { background:linear-gradient(180deg,rgba(8,37,78,.5),rgba(3,16,39,.72)); }
+    .platform { background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(209,236,255,.9)); border:1px solid rgba(255,255,255,.8); box-shadow:0 10px 26px rgba(0,197,255,.2); }
+    .platform h3 { color:#082650; }
+    .platform small { color:#324d70; }
+    .service-card .icon { color:#fff; background:linear-gradient(135deg,#087cff,#00d9f5); box-shadow:0 0 22px rgba(0,190,255,.25); }
+    .service-card li::before { color:#39f4d0; }
+    .service-card:hover,.platform:hover { transform:translateY(-5px); box-shadow:0 20px 48px rgba(0,198,255,.22); }
+    .process-card::before { color:#47eaff; }
+    .contact-point { color:#d9eaff; }
+    .contact-point b { color:#4cecff; }
+    label { color:#e8f5ff; }
+    input,select,textarea { color:#fff; background:rgba(4,22,49,.65); border-color:rgba(147,213,255,.35); }
+    input::placeholder,textarea::placeholder { color:#adc5e4; }
+    input:focus,select:focus,textarea:focus { border-color:#00e5ff; box-shadow:0 0 0 3px rgba(0,229,255,.15); }
+    select option { color:#071a36; }
+    .form-note { color:#adc5e4; }
+    .backup-banner { background:linear-gradient(120deg,rgba(0,126,255,.32),rgba(0,229,255,.12)),rgba(3,18,43,.7); }
+    .backup-banner p { color:#d6e8ff; }
+    details { color:#fff; }
+    footer { background:rgba(2,10,25,.9); border-top:1px solid rgba(95,210,255,.3); }
+    .footer-brand { color:#fff; }
+    .disclaimer { border-color:rgba(255,255,255,.14); }
+    .btn-outline { border-color:rgba(117,225,255,.55); background:rgba(255,255,255,.08); backdrop-filter:blur(12px); }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } *,*::before,*::after { transition:none !important; } }
+
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <nav class="nav wrap" aria-label="Navegación principal">
+      <a class="brand" href="#inicio" aria-label="GWS Solutions, inicio">
+        <img src="logo.png" alt="Logo GWS Solutions">
+        <span class="brand-name">GWS <span>SOLUTIONS</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="#servicios">Servicios</a>
+        <a href="#sistemas">Sistemas</a>
+        <a href="#metodologia">Cómo trabajamos</a>
+        <a href="#contacto" class="nav-cta">Solicitar asistencia</a>
+      </div>
+    </nav>
+  </div>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Soporte tecnológico para empresas</div>
+          <h1>Tu sistema de gestión funcionando. <span>Tu información protegida.</span></h1>
+          <p class="hero-copy">
+            En GWS Solutions ayudamos a las empresas a mantener, instalar y respaldar sus sistemas de gestión.
+            Asistencia práctica para reducir interrupciones y cuidar la información de tu negocio.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contacto">Solicitar una consulta <span aria-hidden="true">→</span></a>
+            <a class="btn btn-outline" href="#servicios">Conocer los servicios</a>
+          </div>
+          <p class="hero-note">Atención coordinada según el sistema, la infraestructura y las necesidades de cada empresa.</p>
+        </div>
+
+        <aside class="hero-panel" aria-label="Servicios principales de GWS Solutions">
+          <div class="panel-top">
+            <strong>Servicios GWS</strong>
+            <span class="status">Enfoque preventivo</span>
+          </div>
+          <div class="service-line">
+            <div class="service-icon" aria-hidden="true">⚙</div>
+            <div><h3>Mantenimiento y soporte</h3><p>Diagnóstico de incidencias y asistencia con aplicaciones y entorno de trabajo.</p></div>
+          </div>
+          <div class="service-line">
+            <div class="service-icon" aria-hidden="true">⇧</div>
+            <div><h3>Instalación y configuración</h3><p>Preparación de equipos, instalación y configuración de componentes compatibles.</p></div>
+          </div>
+          <div class="service-line">
+            <div class="service-icon" aria-hidden="true">◈</div>
+            <div><h3>Backup y recuperación</h3><p>Planificación de copias de seguridad y asistencia para validar y recuperar respaldos.</p></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="trust-strip">
+      <div class="wrap trust-inner">
+        <div class="trust-item"><strong>01</strong><span>Continuidad operativa</span></div>
+        <div class="trust-item"><strong>02</strong><span>Respaldo de información</span></div>
+        <div class="trust-item"><strong>03</strong><span>Asistencia adaptada a tu empresa</span></div>
+      </div>
+    </div>
+
+    <section class="content-section" id="servicios">
+      <div class="wrap">
+        <div class="section-heading">
+          <div class="kicker">Qué hacemos</div>
+          <h2>Soporte para que puedas concentrarte en tu negocio</h2>
+          <p>Servicios tecnológicos orientados a mantener tus sistemas de gestión operativos y tu información mejor protegida.</p>
+        </div>
+
+        <div class="services-grid">
+          <article class="service-card">
+            <div class="icon" aria-hidden="true">⚙</div>
+            <h3>Mantenimiento de software</h3>
+            <p>Asistencia ante errores de funcionamiento y tareas de mantenimiento para que el entorno de trabajo siga respondiendo.</p>
+            <ul>
+              <li>Diagnóstico inicial de incidencias</li>
+              <li>Revisión de configuración y dependencias</li>
+              <li>Asistencia preventiva y correctiva</li>
+              <li>Derivación al proveedor cuando corresponda</li>
+            </ul>
+          </article>
+
+          <article class="service-card">
+            <div class="icon" aria-hidden="true">▣</div>
+            <h3>Instalación y configuración</h3>
+            <p>Preparación de equipos y entornos para instalar o reinstalar software de gestión según los requisitos disponibles.</p>
+            <ul>
+              <li>Instalación en equipos compatibles</li>
+              <li>Configuración de conexiones y componentes</li>
+              <li>Asistencia en migraciones planificadas</li>
+              <li>Pruebas básicas de funcionamiento</li>
+            </ul>
+          </article>
+
+          <article class="service-card">
+            <div class="icon" aria-hidden="true">◈</div>
+            <h3>Backup y recuperación</h3>
+            <p>Organización de copias de seguridad para reducir riesgos ante fallas de equipos, errores operativos o incidentes.</p>
+            <ul>
+              <li>Configuración de respaldos programados</li>
+              <li>Copias locales y destinos externos o nube</li>
+              <li>Registro y verificación de resultados</li>
+              <li>Pruebas de restauración acordadas</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section platforms" id="sistemas">
+      <div class="wrap">
+        <div class="section-heading">
+          <div class="kicker">Sistemas de gestión</div>
+          <h2>Asistencia para las plataformas que usa tu empresa</h2>
+          <p>Trabajamos con entornos que utilizan estas soluciones. El alcance se confirma previamente según la versión, la licencia, la base de datos y la infraestructura de cada instalación.</p>
+        </div>
+
+        <div class="platform-grid">
+          <article class="platform">
+            <div class="platform-logo" role="img" aria-label="Logotipo de Tango Gestión">
+              <svg viewBox="0 0 190 58" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 12h35v7H35v28h-8V19H14z" fill="#e34a4a"/>
+                <text x="53" y="37" font-family="Arial, sans-serif" font-size="26" font-weight="800" letter-spacing="1" fill="#25334a">TANGO</text>
+                <text x="56" y="49" font-family="Arial, sans-serif" font-size="9" font-weight="700" letter-spacing="2.2" fill="#69768a">GESTIÓN</text>
+              </svg>
+            </div>
+            <h3>Tango Gestión</h3>
+          </article>
+          <article class="platform">
+            <div class="platform-logo" role="img" aria-label="Logotipo de Bejerman">
+              <svg viewBox="0 0 190 58" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 11h17c10 0 15 5 15 12 0 5-3 8-7 10 6 1 10 5 10 11 0 8-6 13-17 13H18z" fill="#1d527f" transform="translate(0 -5) scale(.86)"/>
+                <text x="48" y="35" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#1d527f">Bejerman</text>
+                <path d="M49 42h105" stroke="#55a5c8" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Bejerman</h3>
+          </article>
+          <article class="platform">
+            <div class="platform-logo" role="img" aria-label="Logotipo de Libertya ERP">
+              <svg viewBox="0 0 190 58" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 17l13-8 13 8v16l-13 8-13-8z" fill="none" stroke="#11a7b7" stroke-width="4"/>
+                <path d="M28 9v32M15 17l26 16M41 17L15 33" stroke="#3978f6" stroke-width="2"/>
+                <text x="49" y="32" font-family="Arial, sans-serif" font-size="21" font-weight="800" fill="#203957">libertya</text>
+                <text x="51" y="46" font-family="Arial, sans-serif" font-size="10" font-weight="700" letter-spacing="2" fill="#11a7b7">ERP</text>
+              </svg>
+            </div>
+            <h3>Libertya ERP</h3>
+          </article>
+          <article class="platform">
+            <div class="platform-logo" role="img" aria-label="Logotipo de Dolibarr">
+              <svg viewBox="0 0 190 58" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="26" cy="28" r="17" fill="#f2a33a"/>
+                <path d="M18 18h9c8 0 13 5 13 11s-5 11-13 11h-9z" fill="#e65c3f"/>
+                <circle cx="25" cy="28" r="7" fill="#fff"/>
+                <text x="49" y="35" font-family="Arial, sans-serif" font-size="22" font-weight="800" fill="#3a526d">dolibarr</text>
+                <text x="51" y="47" font-family="Arial, sans-serif" font-size="8" font-weight="700" letter-spacing="1.5" fill="#71849a">ERP &amp; CRM</text>
+              </svg>
+            </div>
+            <h3>Dolibarr</h3>
+          </article>
+          <article class="platform">
+            <div class="platform-logo" role="img" aria-label="Logotipo de Odoo">
+              <svg viewBox="0 0 190 58" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke-width="7">
+                  <path d="M16 19a11 11 0 1 1 0 18a11 11 0 0 1 0-18" stroke="#714b67"/>
+                  <path d="M37 19a11 11 0 1 1 0 18a11 11 0 0 1 0-18" stroke="#017e84"/>
+                  <path d="M58 19a11 11 0 1 1 0 18a11 11 0 0 1 0-18" stroke="#e46e78"/>
+                </g>
+                <text x="77" y="37" font-family="Arial, sans-serif" font-size="28" font-weight="800" fill="#714b67">odoo</text>
+              </svg>
+            </div>
+            <h3>Odoo</h3>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="metodologia">
+      <div class="wrap">
+        <div class="section-heading">
+          <div class="kicker">Proceso de trabajo</div>
+          <h2>Un servicio claro, desde el primer contacto</h2>
+          <p>Antes de intervenir, relevamos el entorno y acordamos el alcance para cuidar la operación y los datos de tu empresa.</p>
+        </div>
+
+        <div class="process-grid">
+          <article class="process-card">
+            <h3>Relevamiento</h3>
+            <p>Identificamos sistema, versión, equipos, base de datos y necesidad concreta.</p>
+          </article>
+          <article class="process-card">
+            <h3>Plan de trabajo</h3>
+            <p>Definimos tareas, accesos requeridos, condiciones y posibles riesgos.</p>
+          </article>
+          <article class="process-card">
+            <h3>Intervención</h3>
+            <p>Realizamos las tareas acordadas, procurando minimizar interrupciones.</p>
+          </article>
+          <article class="process-card">
+            <h3>Verificación</h3>
+            <p>Revisamos los resultados y dejamos indicaciones sobre el trabajo realizado.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" style="padding-top:0">
+      <div class="wrap">
+        <div class="backup-banner">
+          <div>
+            <h2>¿Tu empresa tiene un plan de backup confiable?</h2>
+            <p>Una copia de seguridad es útil cuando puede localizarse, verificarse y restaurarse. Revisemos juntos cómo se están protegiendo tus datos y qué mejoras conviene implementar.</p>
+          </div>
+          <a class="btn btn-primary" href="#contacto">Revisar mis respaldos →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" style="padding-top:20px">
+      <div class="wrap">
+        <div class="section-heading">
+          <div class="kicker">Preguntas frecuentes</div>
+          <h2>Lo que conviene saber</h2>
+        </div>
+        <div class="faq-grid">
+          <details>
+            <summary>¿Pueden trabajar con la versión que ya tenemos instalada?</summary>
+            <p>Primero relevamos la versión, el sistema operativo, la base de datos y los requisitos del proveedor. La viabilidad y el alcance se confirman antes de comenzar.</p>
+          </details>
+          <details>
+            <summary>¿El backup garantiza que nunca perderemos datos?</summary>
+            <p>Ningún respaldo elimina todos los riesgos. Recomendamos copias en más de un destino, controles periódicos y pruebas de restauración acordes a la criticidad de la información.</p>
+          </details>
+          <details>
+            <summary>¿Pueden instalar o recuperar el sistema en otra computadora?</summary>
+            <p>Puede ser posible si se cuenta con instaladores, licencias, credenciales y respaldos válidos, y si el entorno de destino es compatible. Se evalúa caso por caso.</p>
+          </details>
+          <details>
+            <summary>¿GWS es representante oficial de estos productos?</summary>
+            <p>GWS Solutions ofrece servicios independientes de asistencia tecnológica. Los nombres de los productos se mencionan para identificar los entornos sobre los que se consulta; no implican afiliación ni representación oficial.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section contact-section" id="contacto">
+      <div class="wrap contact-layout">
+        <div class="contact-copy">
+          <div class="kicker">Hablemos de tu empresa</div>
+          <h2>Contanos qué necesitás resolver.</h2>
+          <p>Dejanos tus datos y una breve descripción. Recibiremos tu consulta por correo electrónico y podremos coordinar el próximo paso.</p>
+          <div class="contact-point"><b>01</b><span><strong>Mantenimiento</strong><br>Errores, lentitud o problemas de configuración.</span></div>
+          <div class="contact-point"><b>02</b><span><strong>Instalación</strong><br>Nueva computadora, reinstalación o migración.</span></div>
+          <div class="contact-point"><b>03</b><span><strong>Backup</strong><br>Copias programadas, verificación o recuperación.</span></div>
+        </div>
+
+        <div class="contact-form">
+          <form action="https://formspree.io/f/xjgayjkd" method="POST">
+            <input type="hidden" name="_subject" value="Nueva consulta comercial - GWS Solutions">
+            <div class="honeypot" aria-hidden="true">
+              <label for="empresa-web">Dejar vacío</label>
+              <input type="text" id="empresa-web" name="_gotcha" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div class="form-row">
+              <div>
+                <label for="nombre">Nombre y apellido *</label>
+                <input id="nombre" type="text" name="nombre" placeholder="Tu nombre" autocomplete="name" required>
+              </div>
+              <div>
+                <label for="empresa">Empresa</label>
+                <input id="empresa" type="text" name="empresa" placeholder="Nombre de la empresa" autocomplete="organization">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div>
+                <label for="email">Correo electrónico *</label>
+                <input id="email" type="email" name="email" placeholder="nombre@empresa.com" autocomplete="email" required>
+              </div>
+              <div>
+                <label for="telefono">Teléfono</label>
+                <input id="telefono" type="tel" name="telefono" placeholder="Código de área y número" autocomplete="tel">
+              </div>
+            </div>
+
+            <label for="sistema">¿Qué sistema utiliza tu empresa?</label>
+            <select id="sistema" name="sistema">
+              <option value="">Seleccionar sistema</option>
+              <option>Tango Gestión</option>
+              <option>Bejerman</option>
+              <option>Libertya ERP</option>
+              <option>Dolibarr</option>
+              <option>Odoo</option>
+              <option>Otro / No estoy seguro</option>
+            </select>
+
+            <label for="servicio">¿En qué podemos ayudarte?</label>
+            <select id="servicio" name="servicio">
+              <option value="">Seleccionar servicio</option>
+              <option>Mantenimiento de software</option>
+              <option>Instalación y configuración</option>
+              <option>Backup y recuperación</option>
+              <option>Migración o cambio de equipo</option>
+              <option>Consulta general</option>
+            </select>
+
+            <label for="mensaje">Detalle de la consulta *</label>
+            <textarea id="mensaje" name="mensaje" placeholder="Contanos brevemente qué necesitás..." required></textarea>
+
+            <button class="btn btn-primary" type="submit">Enviar consulta <span aria-hidden="true">→</span></button>
+            <p class="form-note">Los datos se utilizarán para responder esta consulta. No incluyas contraseñas ni información confidencial en el formulario.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-inner">
+        <div class="footer-brand">GWS <span>SOLUTIONS</span></div>
+        <div class="footer-note">Mantenimiento de software · Instalación · Backup de información</div>
+        <div class="footer-note">© 2026 GWS Solutions. Todos los derechos reservados.</div>
+      </div>
+      <p class="disclaimer">GWS Solutions brinda asistencia tecnológica independiente. Tango Gestión, Bejerman, Libertya, Dolibarr y Odoo son marcas o productos de sus respectivos titulares. La asistencia disponible depende de la versión, las licencias y el entorno técnico de cada cliente.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
